@@ -27,7 +27,8 @@ BOOT_SECURITY_PATCH = $(PLATFORM_SECURITY_PATCH)
 # Vendor properties
 -include $(LOCAL_PATH)/vendor_prop.mk
 
-PRODUCT_ENFORCE_RRO_TARGETS := *
+PRODUCT_ENFORCE_RRO_TARGETS := \
+    framework-res
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
