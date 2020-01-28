@@ -329,10 +329,18 @@ PRODUCT_PACKAGES += \
 
 # Power
 PRODUCT_PACKAGES += \
+<<<<<<< HEAD
     android.hardware.power@1.2-service-qti
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml
+=======
+    android.hardware.power@1.3-service.pixel-libperfmgr \
+    android.hardware.power.stats@1.0-service.pixel
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.json
+>>>>>>> 4a914cb7... treewide: power: Switch to 1.3 libperfmanager from Wahoo
 
 # Pre-opt SystemUI
 PRODUCT_DEXPREOPT_SPEED_APPS += \
