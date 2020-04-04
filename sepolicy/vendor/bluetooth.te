@@ -1,5 +1,7 @@
 allow bluetooth cnd_vendor_prop:file read;
 allow bluetooth boottime_prop:file read;
+allow bluetooth hal_perf_hwservice:hwservice_manager find;
+allow bluetooth hal_perf_default:binder call;
 
 # Binder call with gpuservice
 binder_call(bluetooth, gpuservice)
