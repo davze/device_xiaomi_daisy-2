@@ -32,6 +32,7 @@ allow init bootstat:process noatsecure;
 allow init gatekeeperd:process noatsecure;
 allow init hal_audio_default:process noatsecure;
 allow init hal_fingerprint_default:process noatsecure;
+allow hal_fingerprint_default storage_file:lnk_file read;
 allow init hal_imsrtp:process noatsecure;
 allow init ims:process noatsecure;
 allow init init_fingerprint:process noatsecure;
