@@ -206,6 +206,10 @@ vendor.vidc.enc.disable.pq=true \
 vendor.vidc.enc.disable_bframes=1 \
 vendor.video.disable.ubwc=1
 
+# Memory optimizations
+PRODUCT_PROPERTY_OVERRIDES += \
+ro.vendor.qti.sys.fw.bservice_enable=true
+
 # Netflix
 PRODUCT_PROPERTY_OVERRIDES += \
 ro.netflix.bsp_rev=Q660-13149-1
@@ -249,13 +253,13 @@ vendor.iop.enable_prefetch_ofr=false \
 vendor.perf.gestureflingboost.enable=true \
 vendor.perf.workloadclassifier.enable=true
 
-# Recovery
-PRODUCT_PROPERTY_OVERRIDES += \
-persist.sys.recovery_update=true
-
 # Rescue party
 PRODUCT_PROPERTY_OVERRIDES += \
 persist.sys.disable_rescue=true
+
+# Recovery
+PRODUCT_PROPERTY_OVERRIDES += \
+persist.sys.recovery_update=true
 
 # Radio
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -293,7 +297,7 @@ rild.libargs=-d/dev/smd0 \
 rild.libpath=/vendor/lib64/libril-qc-qmi-1.so \
 ro.telephony.iwlan_operation_mode=legacy \
 ro.telephony.call_ring.multiple=false \
-ro.telephony.default_network=20,20 \
+ro.telephony.default_network=22,20 \
 persist.sys.fflag.override.settings_network_and_internet_v2=true \
 service.qti.ims.enabled=1 \
 telephony.lteOnCdmaDevice=1 \

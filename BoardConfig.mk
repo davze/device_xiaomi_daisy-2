@@ -32,7 +32,7 @@ TARGET_USES_64_BIT_BINDER := true
 # Kernel
 TARGET_KERNEL_CONFIG := sleepy_defconfig
 BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 androidboot.bootdevice=7824900.sdhci earlycon=msm_hsl_uart,0x78af000 firmware_class.path=/vendor/firmware_mnt/image androidboot.usbconfigfs=true  androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 androidboot.bootdevice=7824900.sdhci earlycon=msm_hsl_uart,0x78af000 firmware_class.path=/vendor/firmware_mnt/image androidboot.usbconfigfs=true 
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 BOARD_KERNEL_PAGESIZE :=  2048
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
@@ -108,10 +108,11 @@ BOARD_USES_QCNE := true
 TARGET_HW_DISK_ENCRYPTION := true
 
 # Display
-TARGET_SCREEN_DENSITY := 420
 TARGET_USES_ION := true
+TARGET_USES_NEW_ION_API :=true
 TARGET_USES_GRALLOC1 := true
 TARGET_USES_HWC2 := true
+TARGET_USES_OVERLAY := true
 TARGET_USES_DRM_PP := true
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
@@ -164,6 +165,9 @@ BOARD_ROOT_EXTRA_SYMLINKS := \
     /vendor/dsp:/dsp \
     /vendor/firmware_mnt:/firmware \
     /mnt/vendor/persist:/persist
+    
+# Peripheral manager
+TARGET_PER_MGR_ENABLED := true
 
 # Peripheral manager
 TARGET_PER_MGR_ENABLED := true
