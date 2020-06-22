@@ -6,7 +6,7 @@
 
 BOARD_VENDOR := xiaomi
 
-DEVICE_PATH := device/xiaomi/sakura
+DEVICE_PATH := device/xiaomi/daisy
 
 TARGET_SPECIFIC_HEADER_PATH := $(DEVICE_PATH)/include
 
@@ -30,25 +30,17 @@ TARGET_BOARD_SUFFIX := _64
 TARGET_USES_64_BIT_BINDER := true
 
 # Kernel
-BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom msm_rtb.filter=0x237
-BOARD_KERNEL_CMDLINE += ehci-hcd.park=3 lpm_levels.sleep_disabled=1
-BOARD_KERNEL_CMDLINE += androidboot.bootdevice=7824900.sdhci
-BOARD_KERNEL_CMDLINE += earlycon=msm_hsl_uart,0x78af000
-BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware_mnt/image
-BOARD_KERNEL_CMDLINE += androidboot.usbconfigfs=true
-BOARD_KERNEL_CMDLINE += skip_initramfs rootwait ro init=/init root=/dev/dm-0
-BOARD_KERNEL_CMDLINE += dm=\"system none ro,0 1 android-verity /dev/mmcblk0p54\"
-
-BOARD_KERNEL_BASE        := 0x80000000
-BOARD_KERNEL_PAGESIZE    := 2048
+TARGET_KERNEL_CONFIG := sleepy_defconfig
+BOARD_KERNEL_BASE := 0x80000000
+BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 androidboot.bootdevice=7824900.sdhci earlycon=msm_hsl_uart,0x78af000 firmware_class.path=/vendor/firmware_mnt/image androidboot.usbconfigfs=true  androidboot.selinux=permissive
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
+BOARD_KERNEL_PAGESIZE :=  2048
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
-TARGET_KERNEL_SOURCE := kernel/xiaomi/sakura
+TARGET_KERNEL_SOURCE := kernel/xiaomi/msm8953
 TARGET_KERNEL_VERSION := 4.9
-TARGET_KERNEL_CONFIG := sakura_defconfig
 
 # Assert
-TARGET_OTA_ASSERT_DEVICE := sakura,sakura_india
+TARGET_OTA_ASSERT_DEVICE := daisy
 
 # ANT
 BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
@@ -96,6 +88,9 @@ BOARD_HAVE_BLUETOOTH_QCOM := true
 BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_PHONY_TARGETS := true
 
+#CAF
+QCOM_HARDWARE_VARIANT := msm8996
+
 # Camera
 BOARD_QTI_CAMERA_32BIT_ONLY := true
 TARGET_TS_MAKEUP := true
@@ -130,18 +125,14 @@ TARGET_ENABLE_MEDIADRM_64 := true
 TARGET_LMKD_STATS_LOG := true
 
 # Filesystem
-TARGET_USES_MKE2FS := true
-TARGET_USERIMAGES_USE_F2FS := true
-TARGET_USERIMAGES_USE_EXT4 := true
-BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
-BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_ROOT_EXTRA_SYMLINKS := \
-    /vendor/dsp:/dsp \
-    /vendor/firmware_mnt:/firmware \
-    /mnt/vendor/persist:/persist
-TARGET_COPY_OUT_VENDOR := vendor
 TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/config.fs
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
+TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
+TARGET_USES_MKE2FS := true
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+TARGET_COPY_OUT_VENDOR := vendor
 
 # FM
 BOARD_HAVE_QCOM_FM := true
@@ -159,18 +150,20 @@ TARGET_USES_MEDIA_EXTENSIONS := true
 TARGET_PROVIDES_LIBPLATFORMCONFIG := true
 
 # Vendor init
-TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_sakura
-TARGET_RECOVERY_DEVICE_MODULES := libinit_sakura
+TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_daisy
+TARGET_RECOVERY_DEVICE_MODULES := libinit_daisy
 
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3221225472
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2684354560
+BOARD_VENDORIMAGE_PARTITION_SIZE := 805306368
+BOARD_HAS_REMOVABLE_STORAGE := true
 BOARD_PERSISTIMAGE_PARTITION_SIZE := 33554432
-BOARD_FLASH_BLOCK_SIZE := 131072
-BOARD_CACHEIMAGE_PARTITION_SIZE := 268435456
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 67108864
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 25765043200
-BOARD_VENDORIMAGE_PARTITION_SIZE := 1073741824
+BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
+BOARD_ROOT_EXTRA_SYMLINKS := \
+    /vendor/dsp:/dsp \
+    /vendor/firmware_mnt:/firmware \
+    /mnt/vendor/persist:/persist
 
 # Peripheral manager
 TARGET_PER_MGR_ENABLED := true
@@ -195,6 +188,9 @@ DISABLE_RILD_OEM_HOOK := true
 TARGET_PROVIDES_QTI_TELEPHONY_JAR := true
 ENABLE_VENDOR_RIL_SERVICE := true
 
+# Security Patch Level
+VENDOR_SECURITY_PATCH := 2020-01-01
+
 # SELinux
 include device/qcom/sepolicy-legacy-um/sepolicy.mk
 
@@ -203,6 +199,14 @@ BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/private
 BOARD_PLAT_PUBLIC_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/public
 BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
 
+# Neverallows
+SELINUX_IGNORE_NEVERALLOWS := true
+
+# System As Root
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
+BOARD_USES_RECOVERY_AS_BOOT := true
+TARGET_NO_RECOVERY := true
+
 # Treble
 BOARD_VNDK_RUNTIME_DISABLE := true
 BOARD_VNDK_VERSION := current
@@ -210,6 +214,10 @@ PRODUCT_FULL_TREBLE_OVERRIDE := true
 PRODUCT_VENDOR_MOVE_ENABLED := true
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 TARGET_PRODUCT_PROP += $(DEVICE_PATH)/product.prop
+
+# Vendor init
+TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_daisy
+TARGET_RECOVERY_DEVICE_MODULES := libinit_daisy
 
 # Wi-Fi
 BOARD_HAS_QCOM_WLAN := true

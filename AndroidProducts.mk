@@ -5,4 +5,4 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/aosp_sakura.mk
+    $(LOCAL_DIR)/aicp_daisy.mk

@@ -34,3 +34,5 @@ mmp.enable.3g2=true
 # WFD
 persist.debug.wfd.enable=1
 persist.sys.wfd.virtual=0
+persist.hwc.enable_vds=1
+persist.debug.coresight.config=stm-events

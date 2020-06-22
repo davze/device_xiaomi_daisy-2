@@ -10,6 +10,9 @@ $(call inherit-product, vendor/xiaomi/sakura/sakura-vendor.mk)
 # Setup dalvik vm configs
 $(call inherit-product, frameworks/native/build/phone-xhdpi-4096-dalvik-heap.mk)
 
+# Enable Google Play System Update
+$(call inherit-product, vendor/google-customization/config.mk)
+
 # Screen density
 PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi
@@ -18,13 +21,16 @@ PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 TARGET_SCREEN_HEIGHT := 2280
 TARGET_SCREEN_WIDTH := 1080
 
+# Boot SPL
+BOOT_SECURITY_PATCH = $(PLATFORM_SECURITY_PATCH)
+
 # Vendor properties
 -include $(LOCAL_PATH)/vendor_prop.mk
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay \
-    $(LOCAL_PATH)/overlay-pe
+    $(LOCAL_PATH)/overlay-aicp
 
 PRODUCT_ENFORCE_RRO_TARGETS := *
 
@@ -64,7 +70,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.print.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.print.xml \
     frameworks/native/data/etc/android.software.sip.voip.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.sip.voip.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/handheld_core_hardware.xml
-
+    
 # ANT
 PRODUCT_PACKAGES += \
     AntHalService \
@@ -126,9 +132,6 @@ PRODUCT_PACKAGES += \
     libbthost_if \
     android.hardware.bluetooth.audio@2.0-impl \
     vendor.qti.hardware.bluetooth_audio@2.0.vendor
-
-# Boot SPL
-BOOT_SECURITY_PATCH = $(PLATFORM_SECURITY_PATCH)
 
 # Camera
 PRODUCT_PACKAGES += \
@@ -257,7 +260,7 @@ PRODUCT_COPY_FILES += \
 
 # Lights
 PRODUCT_PACKAGES += \
-    android.hardware.light@2.0-service.sakura
+    android.hardware.light@2.0-service.daisy
 
 # Media
 PRODUCT_COPY_FILES += \
@@ -281,6 +284,34 @@ PRODUCT_PACKAGES += \
     netutils-wrapper-1.0 \
     android.system.net.netd@1.0 \
     libandroid_net
+    
+# A/B
+AB_OTA_UPDATER := true
+
+AB_OTA_PARTITIONS += \
+    boot \
+    system \
+    vendor
+
+AB_OTA_POSTINSTALL_CONFIG += \
+    RUN_POSTINSTALL_system=true \
+    POSTINSTALL_PATH_system=system/bin/otapreopt_script \
+    FILESYSTEM_TYPE_system=ext4 \
+    POSTINSTALL_OPTIONAL_system=true
+
+PRODUCT_PACKAGES += \
+    otapreopt_script
+
+# Boot control
+PRODUCT_PACKAGES += \
+    android.hardware.boot@1.0-impl \
+    android.hardware.boot@1.0-service \
+    bootctrl.msm8953 \
+    android.hardware.boot@1.0-impl.recovery \
+    bootctrl.msm8953.recovery
+
+PRODUCT_PACKAGES_DEBUG += \
+    bootctl    
 
 # OMX
 PRODUCT_PACKAGES += \
@@ -327,7 +358,7 @@ PRODUCT_PACKAGES += \
     init.qcom.sh \
     init.qcom.usb.rc \
     init.target.rc \
-    init.sakura.rc \
+    init.daisy.rc \
     move_time_data.sh \
     move_wifi_data.sh \
     ueventd.qcom.rc
@@ -357,6 +388,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_BOOT_JARS += \
     telephony-ext
 
+# Recovery
+PRODUCT_PROPERTY_OVERRIDES += \
+persist.sys.recovery_update=true    
+    
 # Seccomp policy
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/seccomp/codec2.vendor.ext.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/codec2.vendor.ext.policy \
@@ -372,6 +407,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/sensors/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf \
     $(LOCAL_PATH)/sensors/sensor_def_qcomdev.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/sensor_def_qcomdev.conf
 
+# Soong
+PRODUCT_SOONG_NAMESPACES += \
+    device/xiaomi/daisy       
+    
 # TextClassifier smart selection model files
 PRODUCT_PACKAGES += \
     textclassifier.bundle1
@@ -385,9 +424,6 @@ PRODUCT_PACKAGES += \
 # USB HAL
 PRODUCT_PACKAGES += \
     android.hardware.usb@1.0-service.basic
-
-# Vendor SPL
-VENDOR_SECURITY_PATCH = $(PLATFORM_SECURITY_PATCH)
 
 # Vibrator
 PRODUCT_PACKAGES += \
@@ -436,7 +472,13 @@ PRODUCT_COPY_FILES += \
 
 # Wi-Fi Display
 PRODUCT_PACKAGES += \
+    libaacwrapper \
     libnl
 
 PRODUCT_BOOT_JARS += \
     WfdCommon
+
+# Verity
+PRODUCT_SYSTEM_VERITY_PARTITION := /dev/block/platform/soc/7824900.sdhci/by-name/system
+PRODUCT_VENDOR_VERITY_PARTITION := /dev/block/platform/soc/7824900.sdhci/by-name/vendor
+$(call inherit-product, build/target/product/verity.mk)

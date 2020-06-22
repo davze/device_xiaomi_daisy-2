@@ -59,25 +59,53 @@ ro.bluetooth.hfp.ver=1.7 \
 ro.qualcomm.bt.hci_transport=smd \
 persist.vendor.bt.aac_frm_ctl.enabled=true \
 
+# camera hal buffer management
+PRODUCT_PROPERTY_OVERRIDES += \
+persist.camera.managebuffer.enable=1
+
 # Camera
 PRODUCT_PROPERTY_OVERRIDES += \
-vidc.enc.dcvs.extra-buff-count=2 \
-media.camera.ts.monotonic=1 \
 persist.vendor.camera.display.lmax=1280x720 \
-persist.vendor.camera.display.umax=1920x108 \
-vendor.camera.hal1.packagelist=com.skype.raider,com.google.android.talk,com.whatsapp \
-vendor.camera.lowpower.record.enable=1 \
-vendor.camera.aux.packagelist=org.codeaurora.snapcam,com.android.camera,com.huaqin.factory,com.mi.AutoTest \
-vendor.camera.aux.packagelist2=com.android.systemui,com.huaqin.cameraautotest,com.huaqin.runtime \
-vendor.camera.aux.packageblacklist=com.discord \
+persist.vendor.camera.display.umax=1920x1080 \
+camera.lowpower.record.enable=1 \
+media.camera.ts.monotonic=1 \
+persist.camera.CDS=off \
+persist.camera.dual.camera=0 \
+persist.camera.gyro.disable=0 \
 persist.vendor.qti.telephony.vt_cam_interface=2 \
-persist.vendor.camera.dual.camera=0 \
-persist.vendor.camera.eis.enable=1 \
-persist.vendor.camera.gyro.disable=0 \
-persist.vendor.camera.isp.clock.optmz=0 \
-persist.vendor.camera.stats.test=5 \
-persist.vendor.camera.CDS=off \
-persist.camera.HAL3.enabled=1
+vidc.enc.dcvs.extra-buff-count=2
+
+#Additional prop camera
+PRODUCT_PROPERTY_OVERRIDES += \
+persist.vendor.camera.HAL3.enabled=1 \
+persist.camera.eis.enable=1 \
+persist.camera.HAL3.enabled=1 \
+persist.camera.max.previewfps=60 \
+persist.camera.isp.clock.optmz=0 \
+persist.camera.stats.test=5
+
+# AF wait AEC settle count
+PRODUCT_PROPERTY_OVERRIDES += \
+ro.config.calibration_cad=/vendor/etc/calibration_cad.xml \
+persist.bokeh.switch.lux=290
+
+# Expose aux camera for below packages
+PRODUCT_PROPERTY_OVERRIDES += \
+camera.aux.packagelist=org.lineageos.snap,com.google.android.GoogleCameraWide,com.android.camera \
+vendor.camera.aux.packagelist=org.lineageos.snap,com.google.android.GoogleCameraWide,com.android.camera \
+vendor.camera.aux.packagelist2=com.android.systemui,com.huaqin.cameraautotest,com.huaqin.runtime \
+vendor.camera.aux.packageblacklist=com.discord
+
+# HAL1
+PRODUCT_PROPERTY_OVERRIDES += \
+vendor.camera.hal1.packagelist=com.skype.raider,com.whatsapp,com.instagram.android
+
+#Temporal Noise Reduction
+PRODUCT_PROPERTY_OVERRIDES += \
+persist.tnr.process.plates=1 \
+persist.vendor.tnr.process.plates=1 \
+persist.denoise.process.plates=1 \
+persist.vendor.denoise.process.plates=1
 
 # Cne
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -221,6 +249,10 @@ vendor.iop.enable_prefetch_ofr=false \
 vendor.perf.gestureflingboost.enable=true \
 vendor.perf.workloadclassifier.enable=true
 
+# Recovery
+PRODUCT_PROPERTY_OVERRIDES += \
+persist.sys.recovery_update=true
+
 # Rescue party
 PRODUCT_PROPERTY_OVERRIDES += \
 persist.sys.disable_rescue=true
@@ -280,7 +312,7 @@ ro.surface_flinger.force_hwc_copy_for_virtual_displays=true \
 ro.surface_flinger.max_virtual_display_dimension=4096
 
 PRODUCT_PROPERTY_OVERRIDES += \
-debug.sf.disable_backpressure=1
+debug.sf.disable_backpressure=1 \
 
 # Thermal configs path
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -307,6 +339,10 @@ persist.vendor.usb.config.extra=none
 PRODUCT_PROPERTY_OVERRIDES += \
 wifi.interface=wlan0
 
+# Zygote preforking
+PRODUCT_PROPERTY_OVERRIDES += \
+persist.device_config.runtime_native.usap_pool_enabled=true
+
 # Unsorted properties
 PRODUCT_PROPERTY_OVERRIDES += \
 keyguard.no_require_sim=true \
@@ -324,4 +360,4 @@ ro.vendor.qti.sys.fw.empty_app_percent=50 \
 ro.vendor.qti.sys.fw.trim_cache_percent=100 \
 ro.vendor.qti.sys.fw.trim_empty_percent=100 \
 ro.vendor.qti.sys.fw.trim_enable_memory=2147483648 \
-ro.vendor.qti.sys.fw.use_trim_settings=true
+ro.vendor.qti.sys.fw.use_trim_settings=true \
