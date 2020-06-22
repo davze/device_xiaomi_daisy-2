@@ -105,7 +105,7 @@ int main(int /* argc */, char ** /* argv */) {
              .lastEntrySupported = false}};
 
          sp<GenericStateResidencyDataProvider> socSdp =
-                new GenericStateResidencyDataProvider("/d/system_stats");
+                new GenericStateResidencyDataProvider("/d/rpm_master_stats");
 
         uint32_t socId = service->addPowerEntity("SoC", PowerEntityType::POWER_DOMAIN);
         socSdp->addEntity(socId, PowerEntityConfig(socStateResidencyConfigs));
