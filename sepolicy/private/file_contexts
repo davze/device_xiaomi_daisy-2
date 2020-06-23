@@ -77,3 +77,6 @@
 
 # Product Libs
 /(product|system/product)/lib(64)?(/.*)?	u:object_r:system_lib_file:s0
+
+# FB for PowerHAL
+/sys/devices/virtual/graphics/fb0/idle_state                  u:object_r:sysfs_graphics:s0

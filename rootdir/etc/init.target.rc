@@ -222,6 +222,10 @@ on property:vendor.post_boot.parsed=1
 
     # Enable PowerHAL hint processing
     setprop vendor.powerhal.init 1
+	
+	# Graphic node permissions
+    chown system graphics /sys/class/graphics/fb0/idle_state
+    chmod 0664 /sys/class/graphics/fb0/idle_state
 
 on charger
     write /sys/devices/system/cpu/cpu2/online 0
