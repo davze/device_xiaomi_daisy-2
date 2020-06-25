@@ -110,7 +110,6 @@ persist.vendor.denoise.process.plates=1
 # Cne
 PRODUCT_PROPERTY_OVERRIDES += \
 persist.vendor.cne.feature=1 \
-vendor.display.enable_default_color_mode=1
 
 # Coresight
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -130,19 +129,31 @@ PRODUCT_PROPERTY_OVERRIDES += \
 persist.dirac.afm.mode=global \
 persist.dirac.poolsize=3
 
-
 # Display
 PRODUCT_PROPERTY_OVERRIDES += \
 debug.hwui.use_buffer_age=false \
 debug.sf.enable_hwc_vds=1 \
+debug.sf.disable_hwc=0 \
 debug.sf.hw=1 \
 ro.opengles.version=196610 \
 vendor.display.disable_partial_split=1 \
 vendor.display.disable_rotator_downscale=1 \
 vendor.display.disable_skip_validate=1 \
+vendor.display.enable_default_color_mode=0 \
 vendor.display.perf_hint_window=50 \
 vendor.gralloc.enable_fb_ubwc=1 \
-debug.hwui.renderer=opengl
+debug.hwui.renderer=opengl \
+debug.enable.sglscale=1 \
+debug.gralloc.enable_fb_ubwc=1 \
+debug.sf.recomputecrop=0 \
+dev.pm.dyn_samplingrate=1 \
+persist.demo.hdmirotationlock=false \
+persist.hwc.enable_vds=1 \
+persist.hwc.mdpcomp.enable=true \
+ro.qualcomm.cabl=0 \
+debug.sdm.support_writeback=0 \
+ro.vendor.display.cabl=2 \
+sdm.debug.disable_skip_validate=1 \
 
 # DRM
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -152,10 +163,9 @@ drm.service.enabled=true
 PRODUCT_PROPERTY_OVERRIDES += \
 persist.qfp=false
 
-# FM
+# Fm
 PRODUCT_PROPERTY_OVERRIDES += \
-ro.fm.transmitter=false \
-vendor.hw.fm.init=0
+ro.fm.transmitter=false
 
 # Frp
 PRODUCT_PROPERTY_OVERRIDES += \

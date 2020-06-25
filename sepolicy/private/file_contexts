@@ -60,3 +60,6 @@
 
 # Thermal Engine Data
 /data/vendor/thermal(/.*)?   u:object_r:thermal_data_file:s0
+
+# Product Libs
+/(product|system/product)/lib(64)?(/.*)?	u:object_r:system_lib_file:s0
