@@ -1,0 +1,2 @@
+allow app_zygote same_process_hal_file:file { read execute };
+allow app_zygote ion_device:chr_file r_file_perms; 
