@@ -1,2 +1,5 @@
 allow bluetooth cnd_vendor_prop:file read;
 allow bluetooth boottime_prop:file read;
+
+# Binder call with gpuservice
+binder_call(bluetooth, gpuservice)
